@@ -12,7 +12,7 @@ from PIL.GifImagePlugin import GifImageFile
 
 path = "doot.gif" # testing
 path = "doot.bmp"
-path = "smiley.bmp"
+path = "images/smiley.bmp"
 
 image = Image.open(path)
 
