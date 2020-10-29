@@ -83,18 +83,18 @@ void setup()
         display.setTextColor(1);
         display.setCursor(10, 10);
         display.println("Connecting...");
+        display.display();
+        Serial.println("connecting to wifi...");
         delay(500);
     }
 
     display.clearDisplay();
-    display.display();
-
-
     display.setCursor(0, 0);
     display.print("IP ");
     display.println(WiFi.localIP());
     display.display();
-    delay(3000);
+
+    delay(3500);
     server.begin();
 }
 
@@ -109,9 +109,11 @@ void handleTCP(WiFiClient client)
     {
         // read first few bytes manually
         int numBytes;
-        while(numBytes = client.available() && currentTime - prevTime < TIMEOUT)
+        while(numBytes = client.available()) // && currentTime - prevTime < TIMEOUT
         {
             currentTime = millis();
+            Serial.print("num bytes");
+            Serial.println(numBytes);
             // on first loop, read first few bytes manually because they are special
             if (cursor == 0 && numBytes >= 3)
             {
@@ -119,6 +121,13 @@ void handleTCP(WiFiClient client)
                 animFrameTime = client.read() * 4;
                 numframes = client.read();
                 numBytes -= 3;
+
+                Serial.print("mode is ");
+                Serial.print(mode);
+                Serial.print(" frame time ");
+                Serial.print(animFrameTime);
+                Serial.print(" num frames ");
+                Serial.println(numframes);
             }
             // this can infinite loop
             // else if (cursor == 0 && numBytes != -1)
@@ -168,7 +177,7 @@ void loop()
         // use the anim buffer to store the host w/ a cstr
         String host((const char*)anim_buffer);
         pingTest(host);
-        delay(3000);
+        mode = MODE_NONE;
     }
     else if (mode == MODE_TEXT)
     {
@@ -180,6 +189,7 @@ void loop()
 
     if (client)
     {
+        display.clearDisplay();
         handleTCP(client);
     }
 }
