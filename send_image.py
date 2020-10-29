@@ -1,4 +1,12 @@
-import base64
+"""
+Send image
+
+Sends a 128x64 1bpp image to the pumpkin. Can be animated or static.
+"""
+
+# could I make this better with argparse? sure?
+# will I? hahahahahahhaha no
+
 from PIL import Image
 from PIL.GifImagePlugin import GifImageFile
 
@@ -7,8 +15,6 @@ path = "doot.bmp"
 path = "smiley.bmp"
 
 image = Image.open(path)
-# image = image.convert('1')
-
 
 DIM_X = 128
 DIM_Y = 64
@@ -24,7 +30,6 @@ image_bytes.append(25) # animFrameTime
 image_bytes.append(num_frames) # num frames
 
 for frame in range(num_frames):
-#for frame in [0]:
     if isinstance(image, GifImageFile):
         image.seek(frame)
     # bytes will read left to right on each row
@@ -40,26 +45,8 @@ for frame in range(num_frames):
                 byte |= val
             image_bytes.append(byte)
 
-# print("bytes: ", image_bytes)
-
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('10.1.1.190', 8001))
 s.send(bytearray(image_bytes))
 s.close()
-
-# does not scale to more than 3 frames
-# image_bytearr = bytearray(image_bytes)
-# result = base64.b64encode(image_bytearr)
-# # print("result:", result)
-
-# import requests
-# url = 'http://10.1.1.190'
-# data = "6020066" + result.decode("utf-8")
-
-# # print("data", data)
-
-# data += "ZZZZZZZ"
-
-# x = requests.post(url, data=data)
-# # print(x.text)
