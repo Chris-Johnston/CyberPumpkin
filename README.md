@@ -6,7 +6,10 @@ The digital pumpkin of the future (not really).
 ![Image of the Cyber Pumpkin showing the "Doot" image.](doot.png)
 
 <!-- todo: image with the top on? -->
-<!-- todo: gif -->
+
+![Gif of the Cyber Pumpkin running a ping test, sped up.](pingtest.gif)
+
+Note that the flickering is due to the framerate. In person it looks just fine.
 
 ## What?
 
